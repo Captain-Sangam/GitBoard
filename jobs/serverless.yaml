@@ -1,0 +1,43 @@
+service: gitboard-refresh
+plugins:
+  - serverless-python-requirements
+  - serverless-plugin-log-retention
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    pythonBin: python3
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: ${env:AWS_REGION, 'us-west-2'}
+  # Uncomment and fill in if deploying inside a VPC:
+  # vpc:
+  #   securityGroupIds:
+  #     - sg-XXXXXXXXXXXXXXXXX
+  #   subnetIds:
+  #     - subnet-XXXXXXXXXXXXXXXXX
+  # deploymentBucket: your-sls-deployments-bucket
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "secretsmanager:GetSecretValue"
+      Resource:
+        - !Sub "arn:aws:secretsmanager:${self:provider.region}:${aws:accountId}:secret:${env:SECRET_NAME, 'gitboard-job'}-*"
+
+package:
+  exclude:
+    - node_modules/**
+    - env/**
+
+functions:
+  poller:
+    handler: daily_load.handler
+    name: gitboard-refresh
+    description: Gitboard - Refresh the data
+    timeout: 720
+    logRetentionInDays: 3
+    maximumRetryAttempts: 0
+    events:
+      - schedule: cron(55 23 ? * * *)
