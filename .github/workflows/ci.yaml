@@ -9,11 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/ruff-action@v3
+      - name: Lint Python
+        uses: astral-sh/ruff-action@v3
         with:
           src: jobs/
-          ruff-version: latest
-          ruff-format-args: --check
+          version: "0.17.1"
+          args: check
+
+      - name: Check Python formatting
+        run: ruff format --check jobs/
 
   build-server:
     name: Build Server

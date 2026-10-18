@@ -2,16 +2,15 @@
 Full historical ingestion.
 Fetches all merged PRs across every repo in the GitHub org.
 
-When running in Lambda, secrets are loaded from AWS Secrets Manager (see config.py).
-Locally, set these environment variables:
-  DATABASE_URL   - PostgreSQL connection string
-  GITHUB_TOKEN   - GitHub personal access token
-  GITHUB_ORG     - GitHub organization name
+Credentials are always read from AWS Secrets Manager (see config.py),
+including during local execution. Set SECRET_NAME and AWS_REGION to select
+the secret, and configure an AWS identity authorized to read it.
+The secret JSON supplies DATABASE_URL, GITHUB_TOKEN and GITHUB_ORG.
 """
 
-from db import bulk_upsert_prs
-from github_client import get_github, get_org_name, fetch_repos, fetch_merged_prs
 import profile_load
+from db import bulk_upsert_prs
+from github_client import fetch_merged_prs, fetch_repos, get_github, get_org_name
 
 
 def handler(event=None, context=None):
@@ -33,7 +32,8 @@ def handler(event=None, context=None):
                 inserted = bulk_upsert_prs(prs)
                 total_inserted += inserted
                 print(f"  Inserted: {inserted}")
-        except Exception as e:
+        # Preserve partial progress: one failed repo must not abort the batch.
+        except Exception as e:  # noqa: BLE001
             print(f"  Error processing {repo.name}: {e}")
 
     print(f"\nInitial load complete. Total inserted: {total_inserted}")

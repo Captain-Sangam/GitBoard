@@ -1,6 +1,6 @@
 import psycopg2
-from psycopg2.extras import execute_values
 from config import get_secret
+from psycopg2.extras import execute_values
 
 
 def get_connection():
