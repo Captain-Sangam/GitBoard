@@ -1,112 +1,23 @@
-# Contributing to Gitboard
+# Contributing to GitBoard
 
-Thanks for your interest in contributing! This guide will help you get started.
+Bug reports, documentation fixes and code contributions are welcome. Follow the [code of conduct](CODE_OF_CONDUCT.md), and report vulnerabilities through the [security policy](SECURITY.md).
 
-## Getting Started
+## Setup
 
-1. **Fork** the repository and clone your fork
-2. Create a new branch from `main` for your work
-3. Install dependencies: `npm install`
-4. Copy `.env.example` to `.env` and fill in your values
-5. Run the dev server: `npm run dev`
+Follow [Getting started](docs/getting-started.md) to install dependencies, create both database tables and configure ingestion. The web app and Python jobs use different credential sources; putting job credentials in `.env` does not configure the current Secrets Manager-based importer.
 
-## Development Setup
+Read [AGENTS.md](AGENTS.md) for architecture boundaries and the [development guide](docs/development.md) for commands, conventions and troubleshooting.
 
-### Web server (Next.js)
+## Verify and submit
 
-```bash
-npm install
-npm run dev
-```
+1. Create a descriptive branch from `main` and keep the change focused.
+2. Run `npm run lint`, `npx tsc --noEmit` and `npm run build` for web changes. For Python changes, also run `ruff check jobs/` and `ruff format --check jobs/`. CI runs these checks.
+3. Exercise changed behavior locally, using an isolated database when appropriate. Verify both themes for UI changes.
+4. For documentation changes, check commands, relative links, heading anchors and image paths. Use real app captures with fictional data; see [screenshots and branding](docs/screenshots.md).
+5. Open a pull request describing what changed, why it helps and which checks you ran. Include screenshots for visible interface changes, and state any verification limits.
 
-### Data jobs (Python)
+## Issues and feature requests
 
-```bash
-cd jobs
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+For bugs, include steps to reproduce, expected and actual behavior, relevant runtime versions and sanitized logs. For feature requests, explain the problem and the workflow you want to improve. Do not include credentials, private repository content or real contributor data in public reports.
 
-### Database
-
-You need a PostgreSQL database. Create the schema:
-
-```bash
-psql $DATABASE_URL -f jobs/create_table.sql
-```
-
-## Making Changes
-
-### Branch naming
-
-Use descriptive branch names:
-
-- `feat/add-chart-view` — new features
-- `fix/leaderboard-sort` — bug fixes
-- `docs/update-readme` — documentation
-- `refactor/query-layer` — code improvements
-
-### Code style
-
-- **TypeScript (web server):** Follow the existing ESLint config. Run `npm run lint` before committing.
-- **Python (data jobs):** Follow PEP 8. The CI runs [Ruff](https://github.com/astral-sh/ruff) for linting and formatting.
-- Use meaningful variable and function names.
-- Avoid adding comments that just narrate what the code does.
-
-### Architecture boundaries
-
-- The web server (`src/`) and data jobs (`jobs/`) are independent — do not import between them.
-- Database queries go in `src/lib/queries.ts`. API routes call query functions, never raw SQL.
-- UI primitives in `src/components/ui/` are managed by shadcn — avoid editing these directly.
-- Use semantic color tokens (`bg-background`, `text-foreground`, etc.) instead of hardcoded colors.
-
-### Commit messages
-
-Write clear, concise commit messages:
-
-```
-feat: add weekly activity chart to profile page
-
-fix: correct LOC calculation for merge commits
-
-docs: add Docker Compose example to README
-```
-
-Use the imperative mood ("add", not "added" or "adds").
-
-## Pull Requests
-
-1. Make sure your branch is up to date with `main`
-2. Run lint and type checks:
-   ```bash
-   npm run lint
-   npx tsc --noEmit
-   ```
-3. Test your changes locally
-4. Open a PR with a clear description of what changed and why
-5. Fill in the PR template
-
-PRs are reviewed before merging. Please be patient and responsive to feedback.
-
-## Reporting Bugs
-
-Open an issue with:
-
-- A clear description of the bug
-- Steps to reproduce
-- Expected vs. actual behavior
-- Screenshots if applicable
-- Your environment (OS, Node version, browser)
-
-## Requesting Features
-
-Open an issue describing:
-
-- The problem you're trying to solve
-- Your proposed solution
-- Any alternatives you've considered
-
-## Code of Conduct
-
-This project follows the [Contributor Covenant Code of Conduct](CODE_OF_CONDUCT.md). By participating, you agree to uphold it.
+Contributions are licensed under the [MIT License](LICENSE).

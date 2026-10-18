@@ -1,7 +1,8 @@
 node_modules
 .next
 .git
-.env.example
+.env
+.env.*
 *.md
 jobs/
 .DS_Store

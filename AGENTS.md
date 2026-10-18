@@ -44,3 +44,11 @@ The two components share a database but no code. Do not import between them.
 - The Dockerfile produces a standalone Next.js image — keep `output: "standalone"` in `next.config.ts`.
 - TypeScript formatting uses the default Next.js/ESLint config. Run `npm run lint` before committing.
 - Python formatting and linting uses [Ruff](https://github.com/astral-sh/ruff). Run `ruff check jobs/` and `ruff format --check jobs/` before committing.
+
+## Documentation and public imagery
+
+- Keep the root README concise: centered `logo.svg`, tagline, real app screenshot, setup entry point and documentation links. Put detailed guides in `docs/` and maintain `docs/README.md` as the index.
+- Public screenshots live in `docs/images/` and must use fictional, isolated demo data with AI disabled. Record their source, date and crops in `docs/screenshots.md`; never publish company data or credentials.
+- The selected identity is Branch Bars: `logo.svg` is the native vector symbol and `logo.png` is the original generated wordmark artwork.
+- Check commands against the implementation. In particular, ingestion currently reads AWS Secrets Manager even locally, the web pool requires TLS, and the checked-in SQL creates only the pull-request table. The setup guide documents the additional profile-table DDL.
+- For documentation-only changes, validate local links, anchors, image paths and setup examples; do not report unrun live GitHub, AWS or AI checks as passed.

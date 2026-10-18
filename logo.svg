@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">GitBoard — Branch Bars</title>
+  <defs>
+    <linearGradient id="rose" x1="16" y1="104" x2="112" y2="24" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fa748a"/>
+      <stop offset=".5" stop-color="#df3f63"/>
+      <stop offset="1" stop-color="#b51c48"/>
+    </linearGradient>
+    <mask id="commits" maskUnits="userSpaceOnUse" x="0" y="0" width="128" height="128" style="mask-type:luminance">
+      <rect width="128" height="128" fill="white"/>
+      <g fill="black">
+        <path d="M33.1 105V80.6H47.2C57 80.6 64.1 72.8 64.1 61.9H81.8C90.4 61.9 97.1 53.2 97.1 38.7" fill="none" stroke="black" stroke-width="4"/>
+        <circle cx="33.1" cy="80.6" r="6.3"/>
+        <circle cx="64.1" cy="61.9" r="6.3"/>
+        <circle cx="97.1" cy="38.7" r="6.3"/>
+      </g>
+    </mask>
+  </defs>
+  <g fill="url(#rose)" mask="url(#commits)">
+    <rect x="16" y="65.9" width="30" height="38.4" rx="8.6"/>
+    <rect x="49.8" y="47" width="28.5" height="57.3" rx="8.6"/>
+    <rect x="82.1" y="24" width="30" height="80.3" rx="8.6"/>
+  </g>
+</svg>
