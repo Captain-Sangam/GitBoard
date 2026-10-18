@@ -19,6 +19,8 @@ Run web commands from the repository root:
 
 There is no dedicated automated test command in `package.json`. CI runs web type checking, linting and a production build, plus Ruff checks for the Python jobs. Explain any checks you could not complete in the PR.
 
+CI pins Ruff to **0.17.1**. Install that version in your development environment (`python -m pip install ruff==0.17.1`) when running the Python checks. [`ruff.toml`](../ruff.toml) keeps suggestions compatible with the documented Python 3.10 minimum.
+
 ## Source layout
 
 - `src/app/`: pages and HTTP route handlers

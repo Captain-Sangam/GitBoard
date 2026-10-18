@@ -1,7 +1,8 @@
 from datetime import timezone
+
+from config import get_secret
 from dateutil.relativedelta import relativedelta
 from github import Github
-from config import get_secret
 
 
 def get_github():
@@ -23,10 +24,7 @@ def month_start(dt):
 
 def fetch_repos(g, org_name):
     org = g.get_organization(org_name)
-    repos = []
-    for repo in org.get_repos(type="all"):
-        repos.append(repo)
-    return repos
+    return list(org.get_repos(type="all"))
 
 
 def fetch_user_profile(g, login):
