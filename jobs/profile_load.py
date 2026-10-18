@@ -9,8 +9,9 @@ Usage:
 """
 
 import argparse
-from db import get_unique_authors, truncate_profiles, bulk_upsert_profiles
-from github_client import get_github, fetch_user_profile
+
+from db import bulk_upsert_profiles, get_unique_authors, truncate_profiles
+from github_client import fetch_user_profile, get_github
 
 
 def handler(event=None, context=None, clear=False):
@@ -30,7 +31,8 @@ def handler(event=None, context=None, clear=False):
             profiles.append(profile)
             name = profile["name"] or login
             print(f"  Fetched profile for {name} ({login})")
-        except Exception as e:
+        # Continue with other authors when an individual profile cannot load.
+        except Exception as e:  # noqa: BLE001
             print(f"  Error fetching profile for {login}: {e}")
 
     if profiles:

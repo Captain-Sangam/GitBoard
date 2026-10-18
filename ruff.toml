@@ -1,0 +1,2 @@
+# Keep lint suggestions compatible with the documented Python minimum.
+target-version = "py310"
